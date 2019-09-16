@@ -1,1 +1,25 @@
+server:
+  port: 9000
 
+spring:
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+    url: jdbc:postgresql://localhost:5432/intech-forum-api
+    username: alexandergolovnya
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    database: POSTGRESQL
+    show-sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
