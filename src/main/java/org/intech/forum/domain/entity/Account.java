@@ -1,4 +1,4 @@
-package org.intech.forum.domain;
+package org.intech.forum.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

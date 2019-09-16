@@ -1,4 +1,4 @@
-package org.intech.forum.domain;
+package org.intech.forum.domain.entity;
 
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;

@@ -1,9 +1,11 @@
-package org.intech.forum.domain;
+package org.intech.forum.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
@@ -11,8 +13,8 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "topic_messages")
-public class TopicMessage {
+@Table(name = "account_authorities")
+public class AccountAuthority {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -20,12 +22,10 @@ public class TopicMessage {
     @Column(nullable = false, unique = true, columnDefinition = "int")
     private int id;
 
-    @Column(nullable = false, unique = true, length = 60)
-    private String messageTitle;
+    @Column(nullable = false, unique = true)
+    private String authorityName;
 
-    private String messageBody;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    @JsonIgnore
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private Set<Account> accounts;
 }
