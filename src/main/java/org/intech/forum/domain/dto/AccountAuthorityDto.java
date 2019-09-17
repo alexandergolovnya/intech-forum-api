@@ -17,7 +17,7 @@ public class AccountAuthorityDto {
 
     @Null(groups = OnCreate.class, message = "On account authority creating id should be null")
     @NotNull(groups = OnUpdate.class, message = "On account authority editing id couldn't be null")
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "Authority name may not be blank")
     private String authorityName;
