@@ -1,0 +1,22 @@
+package org.intech.forum.service;
+
+import org.intech.forum.domain.dto.AccountAuthorityDto;
+
+import java.util.List;
+
+/**
+ * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
+ * @created: 2019/09/16
+ */
+public interface AccountAuthorityService {
+
+    AccountAuthorityDto createAccountAuthority(AccountAuthorityDto accountAuthorityDto);
+
+    AccountAuthorityDto editAccountAuthority(int id, AccountAuthorityDto accountAuthorityDto);
+
+    void deleteAAccountAuthority(int id);
+
+    AccountAuthorityDto getAccountAuthority(int id);
+
+    List<AccountAuthorityDto> getAllAccountAuthorities();
+}
