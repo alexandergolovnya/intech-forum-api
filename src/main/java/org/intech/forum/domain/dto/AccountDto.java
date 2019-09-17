@@ -1,11 +1,11 @@
 package org.intech.forum.domain.dto;
 
 import lombok.Data;
+import org.intech.forum.validation.OnCreate;
+import org.intech.forum.validation.OnUpdate;
 import org.intech.forum.validation.Password;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Set;
 
 /**
@@ -15,7 +15,9 @@ import java.util.Set;
 @Data
 public class AccountDto {
 
-    private int id;
+    @Null(groups = OnCreate.class, message = "On account creating account id should be null")
+    @NotNull(groups = OnUpdate.class, message = "On account editing account id couldn't be null")
+    private Integer id;
 
     @Email(message = "The format of the e-mail address is incorrect")
     @NotBlank(message = "Account email may not be blank")
@@ -41,9 +43,18 @@ public class AccountDto {
     @Size(max = 50, message = "Account middle name length should be less than 50 symbols")
     private String middleName;
 
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    @NotNull(groups = OnUpdate.class, message = "On account editing field 'account non expired' couldn't be null")
+    private Boolean accountNonExpired;
+
+    @NotNull(groups = OnUpdate.class, message = "On account editing field 'account non locked' couldn't be null")
+    private Boolean accountNonLocked;
+
+    @NotNull(groups = OnUpdate.class, message = "On account editing field 'credentials non expired' couldn't be null")
+    private Boolean credentialsNonExpired;
+
+    @NotNull(groups = OnUpdate.class, message = "On account editing field 'enabled' couldn't be null")
+    private Boolean enabled;
+
+    @Null(message = "Account authorities couldn't be changed or assigned directly, it should be null.")
     private Set<AccountAuthorityDto> accountAuthorities;
 }
