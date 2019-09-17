@@ -28,7 +28,7 @@ public class Account implements UserDetails {
     private int id;
 
     @Email
-    @Column(nullable = false, unique = true, length = 60)
+    @Column(nullable = false, unique = true, length = 254)
     private String email;
 
     @Column(unique = true, length = 15)
