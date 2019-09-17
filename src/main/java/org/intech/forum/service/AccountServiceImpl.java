@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.intech.forum.utils.ModelMapperUtils.map;
 import static org.intech.forum.utils.ModelMapperUtils.mapAll;
 
@@ -130,16 +131,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private void checkAccountEmailForUniqueness(AccountDto accountDto) {
-        final Optional<Account> account = accountRepository.findByEmail(accountDto.getEmail());
-        if (account.isPresent()) {
-            throw new IllegalArgumentException("Account with such email already exists.");
+        if (!isEmpty(accountDto.getEmail())) {
+            final Optional<Account> account = accountRepository.findByEmail(accountDto.getEmail());
+            if (account.isPresent()) {
+                throw new IllegalArgumentException("Account with such email already exists.");
+            }
         }
     }
 
     private void checkAccountPhoneForUniqueness(AccountDto accountDto) {
-        final Optional<Account> account = accountRepository.findByPhone(accountDto.getPhone());
-        if (account.isPresent()) {
-            throw new IllegalArgumentException("Account with such phone already exists.");
+        if (!isEmpty(accountDto.getPhone())) {
+            final Optional<Account> account = accountRepository.findByPhone(accountDto.getPhone());
+            if (account.isPresent()) {
+                throw new IllegalArgumentException("Account with such phone already exists.");
+            }
         }
     }
 }
