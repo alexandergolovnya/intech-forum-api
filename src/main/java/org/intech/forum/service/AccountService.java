@@ -14,7 +14,7 @@ public interface AccountService {
 
     AccountDto editAccount(int id, AccountDto accountDto);
 
-    void deleteAAccount(int id);
+    void deleteAccount(int id);
 
     AccountDto getAccount(int id);
 
