@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.intech.forum.utils.ModelMapperUtils.map;
 import static org.intech.forum.utils.ModelMapperUtils.mapAll;
 
@@ -37,14 +36,10 @@ public class AccountAuthorityServiceImpl implements AccountAuthorityService {
     public AccountAuthorityDto editAccountAuthority(int id, AccountAuthorityDto dto) {
         checkAccountAuthorityNameForUniqueness(dto);
 
-        final Optional<AccountAuthority> accountRoleToEdit = accountAuthorityRepository.findById(id);
-        if (accountRoleToEdit.isPresent()) {
-            final AccountAuthority accountAuthority = accountRoleToEdit.get();
+        final Optional<AccountAuthority> authorityToEdit = accountAuthorityRepository.findById(id);
+        if (authorityToEdit.isPresent()) {
 
-            if (!isEmpty(dto.getAuthorityName())) {
-                accountAuthority.setAuthorityName(dto.getAuthorityName());
-            }
-
+            AccountAuthority accountAuthority = map(dto, AccountAuthority.class);
             accountAuthorityRepository.save(accountAuthority);
             return map(accountAuthority, AccountAuthorityDto.class);
 

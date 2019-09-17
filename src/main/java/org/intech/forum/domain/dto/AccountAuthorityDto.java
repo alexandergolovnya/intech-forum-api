@@ -1,8 +1,12 @@
 package org.intech.forum.domain.dto;
 
 import lombok.Data;
+import org.intech.forum.validation.OnCreate;
+import org.intech.forum.validation.OnUpdate;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 /**
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
@@ -11,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AccountAuthorityDto {
 
+    @Null(groups = OnCreate.class, message = "On account authority creating id should be null")
+    @NotNull(groups = OnUpdate.class, message = "On account authority editing id couldn't be null")
     private int id;
 
     @NotBlank(message = "Authority name may not be blank")
