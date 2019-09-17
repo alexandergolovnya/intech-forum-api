@@ -39,6 +39,16 @@ public class AccountController {
         return accountService.getAccount(id);
     }
 
+    @GetMapping("/email/{email}")
+    public AccountDto getAccountByEmail(@PathVariable String email) {
+        return accountService.getAccountByEmail(email);
+    }
+
+    @GetMapping("/phone/{phone}")
+    public AccountDto getAccountByPhone(@PathVariable String phone) {
+        return accountService.getAccountByPhone(phone);
+    }
+
     @GetMapping
     public List<AccountDto> getAllAccounts() {
         return accountService.getAllAccounts();
