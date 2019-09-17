@@ -44,31 +44,26 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto editAccount(int id, AccountDto accountDto) {
+    public AccountDto editAccount(int id, AccountDto dto) {
         final Optional<Account> accountToEdit = accountRepository.findById(id);
 
         if (accountToEdit.isPresent()) {
-            final Account account = accountToEdit.get();
+            Account account = accountToEdit.get();
+            final Set<AccountAuthority> accountAuthorities = account.getAccountAuthorities();
 
             // check email and phone for uniqueness if it was edited
-            if (!accountDto.getEmail().equals(account.getEmail())) {
-                checkAccountEmailForUniqueness(accountDto);
-            } else if (!accountDto.getPhone().equals(account.getPhone())) {
-                checkAccountPhoneForUniqueness(accountDto);
+            if (!isEmpty(dto.getEmail()) && !dto.getEmail().equals(account.getEmail())) {
+                checkAccountEmailForUniqueness(dto);
+            }
+            if (!isEmpty(dto.getPhone()) && !dto.getPhone().equals(account.getPhone())) {
+                checkAccountPhoneForUniqueness(dto);
             }
 
-            account.setEmail(accountDto.getEmail());
-            account.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-            account.setPhone(accountDto.getPhone());
-
-            if (accountDto.getAccountAuthorities() != null) {
-                final List<AccountAuthority> accountRoles = mapAll(accountDto.getAccountAuthorities(), AccountAuthority.class);
-                account.setAccountAuthorities(new HashSet<>(accountRoles));
-            }
-
+            account = map(dto, Account.class);
+            account.setAccountAuthorities(accountAuthorities);
             accountRepository.save(account);
 
-            return accountDto;
+            return map(account, AccountDto.class);
 
         } else throw new IllegalArgumentException("Account with such id doesn't exists.");
     }
