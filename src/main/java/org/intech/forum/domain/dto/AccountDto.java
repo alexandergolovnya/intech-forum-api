@@ -1,6 +1,7 @@
 package org.intech.forum.domain.dto;
 
 import lombok.Data;
+import org.intech.forum.validation.Password;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class AccountDto {
     @Size(min = 8, max = 15, message = "Account phone length should be between 8 and 15 symbols")
     private String phone;
 
+    @Password
     @NotBlank(message = "Account password may not be blank")
     @Size(min = 8, max = 60, message = "Account password length should be between 8 and 60 symbols")
     private String password;
@@ -43,5 +45,5 @@ public class AccountDto {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    private Set<AccountAuthorityDto> accountAuthorityDtos;
+    private Set<AccountAuthorityDto> accountAuthorities;
 }

@@ -60,8 +60,8 @@ public class AccountServiceImpl implements AccountService {
             account.setPassword(passwordEncoder.encode(accountDto.getPassword()));
             account.setPhone(accountDto.getPhone());
 
-            if (accountDto.getAccountAuthorityDtos() != null) {
-                final List<AccountAuthority> accountRoles = mapAll(accountDto.getAccountAuthorityDtos(), AccountAuthority.class);
+            if (accountDto.getAccountAuthorities() != null) {
+                final List<AccountAuthority> accountRoles = mapAll(accountDto.getAccountAuthorities(), AccountAuthority.class);
                 account.setAccountAuthorities(new HashSet<>(accountRoles));
             }
 
