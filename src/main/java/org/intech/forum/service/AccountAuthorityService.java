@@ -14,7 +14,7 @@ public interface AccountAuthorityService {
 
     AccountAuthorityDto editAccountAuthority(int id, AccountAuthorityDto accountAuthorityDto);
 
-    void deleteAAccountAuthority(int id);
+    void deleteAccountAuthority(int id);
 
     AccountAuthorityDto getAccountAuthority(int id);
 

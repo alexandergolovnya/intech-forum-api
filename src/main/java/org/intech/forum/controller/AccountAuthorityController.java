@@ -36,8 +36,8 @@ public class AccountAuthorityController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAAccountAuthority(@PathVariable int id) {
-        accountAuthorityService.deleteAAccountAuthority(id);
+    public void deleteAccountAuthority(@PathVariable int id) {
+        accountAuthorityService.deleteAccountAuthority(id);
     }
 
     @GetMapping("/{id}")

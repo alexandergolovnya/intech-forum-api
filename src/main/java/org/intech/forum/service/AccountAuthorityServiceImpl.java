@@ -47,7 +47,7 @@ public class AccountAuthorityServiceImpl implements AccountAuthorityService {
     }
 
     @Override
-    public void deleteAAccountAuthority(int id) {
+    public void deleteAccountAuthority(int id) {
         if (accountAuthorityRepository.existsById(id)) {
 
             accountAuthorityRepository.deleteById(id);
