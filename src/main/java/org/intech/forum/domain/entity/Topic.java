@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
@@ -24,4 +25,7 @@ public class Topic {
     private String title;
 
     private String description;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastMessageDateTime;
 }
