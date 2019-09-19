@@ -1,7 +1,9 @@
 package org.intech.forum.service;
 
 import org.intech.forum.domain.dto.AccountDto;
+import org.intech.forum.exception.ForbiddenException;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -12,9 +14,9 @@ public interface AccountService {
 
     AccountDto createAccount(AccountDto accountDto);
 
-    AccountDto editAccount(int id, AccountDto accountDto);
+    AccountDto editAccount(int id, AccountDto accountDto, Principal principal) throws ForbiddenException;
 
-    void deleteAccount(int id);
+    void deleteAccount(int id, Principal principal);
 
     AccountDto getAccount(int id);
 

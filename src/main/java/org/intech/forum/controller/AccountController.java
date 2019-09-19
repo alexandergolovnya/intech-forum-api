@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -33,14 +34,14 @@ public class AccountController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @Validated(OnUpdate.class)
     @PutMapping("/{id}")
-    public AccountDto editAccount(@PathVariable int id, @Valid @RequestBody AccountDto dto) {
-        return accountService.editAccount(id, dto);
+    public AccountDto editAccount(@PathVariable int id, @Valid @RequestBody AccountDto dto, Principal principal) {
+        return accountService.editAccount(id, dto, principal);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public void deleteAccount(@PathVariable int id) {
-        accountService.deleteAccount(id);
+    public void deleteAccount(@PathVariable int id, Principal principal) {
+        accountService.deleteAccount(id, principal);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")

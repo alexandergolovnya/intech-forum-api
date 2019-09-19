@@ -6,9 +6,11 @@ import org.intech.forum.domain.entity.Account;
 import org.intech.forum.domain.entity.AccountAuthority;
 import org.intech.forum.domain.repository.AccountAuthorityRepository;
 import org.intech.forum.domain.repository.AccountRepository;
+import org.intech.forum.exception.ForbiddenException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,7 @@ import java.util.Set;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.intech.forum.utils.ModelMapperUtils.map;
 import static org.intech.forum.utils.ModelMapperUtils.mapAll;
+import static org.intech.forum.utils.SecurityUtils.checkUserAccessRightsToThisMethod;
 
 /**
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
@@ -44,37 +47,40 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto editAccount(int id, AccountDto dto) {
-        final Optional<Account> accountToEdit = accountRepository.findById(id);
+    public AccountDto editAccount(int id, AccountDto dto, Principal principal) throws ForbiddenException {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Account with such id doesn't exists"));
 
-        if (accountToEdit.isPresent()) {
-            Account account = accountToEdit.get();
-            final Set<AccountAuthority> accountAuthorities = account.getAccountAuthorities();
+        final Set<AccountAuthority> accountAuthorities = account.getAccountAuthorities();
 
-            // check email and phone for uniqueness if it was edited
-            if (!isEmpty(dto.getEmail()) && !dto.getEmail().equals(account.getEmail())) {
-                checkAccountEmailForUniqueness(dto);
-            }
-            if (!isEmpty(dto.getPhone()) && !dto.getPhone().equals(account.getPhone())) {
-                checkAccountPhoneForUniqueness(dto);
-            }
+        // check if current user has access rights to this method
+        checkUserAccessRightsToThisMethod(principal, account.getEmail());
 
-            account = map(dto, Account.class);
-            account.setAccountAuthorities(accountAuthorities);
-            accountRepository.save(account);
+        // check email and phone for uniqueness if it was edited
+        if (!dto.getEmail().equals(account.getEmail())) {
+            checkAccountEmailForUniqueness(dto);
+        }
+        if (!isEmpty(dto.getPhone()) && !dto.getPhone().equals(account.getPhone())) {
+            checkAccountPhoneForUniqueness(dto);
+        }
 
-            return map(account, AccountDto.class);
+        account = map(dto, Account.class);
+        account.setPassword(passwordEncoder.encode(dto.getPassword()));
+        account.setAccountAuthorities(accountAuthorities);
+        accountRepository.save(account);
 
-        } else throw new IllegalArgumentException("Account with such id doesn't exists.");
+        return map(account, AccountDto.class);
     }
 
     @Override
-    public void deleteAccount(int id) {
-        if (accountRepository.existsById(id)) {
+    public void deleteAccount(int id, Principal principal) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Account with such id doesn't exists"));
 
-            accountRepository.deleteById(id);
+        // check if current user has access rights to this method
+        checkUserAccessRightsToThisMethod(principal, account.getEmail());
 
-        } else throw new IllegalArgumentException("Account with such id doesn't exists");
+        accountRepository.deleteById(id);
     }
 
     @Override
