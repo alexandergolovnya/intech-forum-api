@@ -45,7 +45,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
         configurer
-                .withClientDetails(customClientDetailsService);
+//                .withClientDetails(customClientDetailsService);
+                .inMemory()
+                .withClient("client")
+                .secret(passwordEncoder.encode("client"))
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("read", "write")
+                .accessTokenValiditySeconds(86400)
+                .refreshTokenValiditySeconds(86400);
     }
 
     @Override
