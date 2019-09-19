@@ -32,14 +32,14 @@ public class TopicController {
         return topicService.createTopic(dto);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @Validated(OnUpdate.class)
     @PutMapping("/{id}")
     public TopicDto editTopic(@PathVariable int id, @Valid @RequestBody TopicDto dto) {
         return topicService.editTopic(id, dto);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteTopic(@PathVariable int id) {
         topicService.deleteTopic(id);
