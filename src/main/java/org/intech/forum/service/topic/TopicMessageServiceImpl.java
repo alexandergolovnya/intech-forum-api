@@ -11,6 +11,7 @@ import org.intech.forum.domain.repository.TopicRepository;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.intech.forum.utils.ModelMapperUtils.map;
 import static org.intech.forum.utils.ModelMapperUtils.mapAll;
+import static org.intech.forum.utils.SecurityUtils.checkUserAccessRightsToThisMethod;
 
 /**
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
@@ -59,49 +61,54 @@ public class TopicMessageServiceImpl implements TopicMessageService {
     }
 
     @Override
-    public TopicMessageDto editTopicMessage(int id, TopicMessageDto dto) {
-        final Optional<TopicMessage> messageToEdit = topicMessageRepository.findById(id);
+    public TopicMessageDto editTopicMessage(int id, TopicMessageDto dto, Principal principal) {
+        TopicMessage topicMessage = topicMessageRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Topic message with such id doesn't exists."));
 
-        if (messageToEdit.isPresent()) {
-            TopicMessage topicMessage = messageToEdit.get();
-            LocalDateTime createDate = topicMessage.getCreateDate();
+        final LocalDateTime createDate = topicMessage.getCreateDate();
+        final String topicMessageCreatorEmail = topicMessage.getAccount().getEmail();
 
-            // check title for uniqueness if it was edited
-            if (!dto.getMessageTitle().equals(topicMessage.getMessageTitle())) {
-                checkTopicMessageTitleForUniqueness(dto);
-            }
+        // check if current user has access rights to this method
+        checkUserAccessRightsToThisMethod(principal, topicMessageCreatorEmail);
 
-            topicMessage = map(dto, TopicMessage.class);
+        // check title for uniqueness if it was edited
+        if (!dto.getMessageTitle().equals(topicMessage.getMessageTitle())) {
+            checkTopicMessageTitleForUniqueness(dto);
+        }
 
-            final Topic topic = topicRepository.findById(dto.getTopicId())
-                    .orElseThrow(IllegalArgumentException::new);
-            final Account account = accountRepository.findById(dto.getAccountId())
-                    .orElseThrow(IllegalArgumentException::new);
+        topicMessage = map(dto, TopicMessage.class);
 
-            topicMessage.setTopic(topic);
-            topicMessage.setAccount(account);
-            topicMessage.setCreateDate(createDate);
+        final Topic topic = topicRepository.findById(dto.getTopicId())
+                .orElseThrow(() -> new IllegalArgumentException("Topic with such id doesn't exist"));
+        final Account account = accountRepository.findById(dto.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("Account with such id doesn't exist"));
 
-            final TopicMessage editedMessage = topicMessageRepository.save(topicMessage);
+        topicMessage.setTopic(topic);
+        topicMessage.setAccount(account);
+        topicMessage.setCreateDate(createDate);
 
-            topicService.updateTopicLastMessageDate(topic, editedMessage.getUpdateDate());
+        final TopicMessage editedMessage = topicMessageRepository.save(topicMessage);
 
-            TopicMessageDto dtoToReturn = map(editedMessage, TopicMessageDto.class);
-            dtoToReturn.setAccountId(account.getId());
-            dtoToReturn.setTopicId(topic.getId());
+        topicService.updateTopicLastMessageDate(topic, editedMessage.getUpdateDate());
 
-            return dtoToReturn;
+        TopicMessageDto dtoToReturn = map(editedMessage, TopicMessageDto.class);
+        dtoToReturn.setAccountId(account.getId());
+        dtoToReturn.setTopicId(topic.getId());
 
-        } else throw new IllegalArgumentException("Topic message with such id doesn't exists.");
+        return dtoToReturn;
     }
 
     @Override
-    public void deleteTopicMessage(int id) {
-        if (topicMessageRepository.existsById(id)) {
+    public void deleteTopicMessage(int id, Principal principal) {
+        TopicMessage topicMessage = topicMessageRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Topic message with such id doesn't exists."));
 
-            topicMessageRepository.deleteById(id);
+        String topicMessageCreatorEmail = topicMessage.getAccount().getEmail();
 
-        } else throw new IllegalArgumentException("Topic message with such id doesn't exists");
+        // check if current user has access rights to this method
+        checkUserAccessRightsToThisMethod(principal, topicMessageCreatorEmail);
+
+        topicMessageRepository.deleteById(id);
     }
 
     @Override

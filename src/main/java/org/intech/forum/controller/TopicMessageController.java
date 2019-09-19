@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -35,14 +36,15 @@ public class TopicMessageController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @Validated(OnUpdate.class)
     @PutMapping("/{id}")
-    public TopicMessageDto editTopicMessage(@PathVariable int id, @Valid @RequestBody TopicMessageDto dto) {
-        return topicMessageService.editTopicMessage(id, dto);
+    public TopicMessageDto editTopicMessage(@PathVariable int id,
+                                            @Valid @RequestBody TopicMessageDto dto, Principal principal) {
+        return topicMessageService.editTopicMessage(id, dto, principal);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public void deleteTopicMessage(@PathVariable int id) {
-        topicMessageService.deleteTopicMessage(id);
+    public void deleteTopicMessage(@PathVariable int id, Principal principal) {
+        topicMessageService.deleteTopicMessage(id, principal);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
