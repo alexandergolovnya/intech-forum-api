@@ -1,6 +1,7 @@
 package org.intech.forum.utils;
 
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.intech.forum.exception.ForbiddenException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
  * @created: 2019/09/19
  */
+@Slf4j
 @UtilityClass
 public class SecurityUtils {
 
@@ -26,7 +28,7 @@ public class SecurityUtils {
      * @param principal          current user credentials
      * @param objectCreatorEmail email of the user that have created this verifiable object
      */
-    public static void checkUserAccessRightsToThisMethod(Principal principal, String objectCreatorEmail) {
+    public static void checkUserAccessRightsToThisMethod(Principal principal, String objectCreatorEmail) throws ForbiddenException {
         Authentication userAuthentication = ((OAuth2Authentication) principal).getUserAuthentication();
         String currentUserEmail = userAuthentication.getPrincipal().toString();
         List<String> userAuthoritiesList = userAuthentication.getAuthorities().stream()
@@ -34,6 +36,10 @@ public class SecurityUtils {
                 .collect(Collectors.toList());
 
         if (!objectCreatorEmail.equals(currentUserEmail) && !userAuthoritiesList.contains("ROLE_ADMIN")) {
+            log.debug(String.format("objectCreatorEmail = %s", objectCreatorEmail));
+            log.debug(String.format("currentUserEmail = %s", currentUserEmail));
+            log.debug(String.format("userAuthoritiesList = %s", userAuthoritiesList));
+
             throw new ForbiddenException("Current user doesn't have access rights to this operation");
         }
     }

@@ -3,6 +3,10 @@ server:
   servlet:
     context-path: /forum/api
 
+logging:
+  level:
+    org: info
+
 spring:
   datasource:
     platform: postgres
