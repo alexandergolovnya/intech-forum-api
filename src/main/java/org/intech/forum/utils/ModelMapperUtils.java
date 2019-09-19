@@ -1,5 +1,6 @@
 package org.intech.forum.utils;
 
+import lombok.experimental.UtilityClass;
 import org.modelmapper.ModelMapper;
 
 import java.util.Collection;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
  * @created: 2019/09/16
  */
+@UtilityClass
 public class ModelMapperUtils {
 
     @SuppressWarnings("UnusedAssignment")
