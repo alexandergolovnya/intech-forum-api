@@ -33,7 +33,7 @@ public class SecurityUtils {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        if (!objectCreatorEmail.equals(currentUserEmail) || !userAuthoritiesList.contains("ROLE_ADMIN")) {
+        if (!objectCreatorEmail.equals(currentUserEmail) && !userAuthoritiesList.contains("ROLE_ADMIN")) {
             throw new ForbiddenException("Current user doesn't have access rights to this operation");
         }
     }
