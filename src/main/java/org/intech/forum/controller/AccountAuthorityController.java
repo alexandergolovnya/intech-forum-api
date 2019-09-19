@@ -2,7 +2,7 @@ package org.intech.forum.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.intech.forum.domain.dto.AccountAuthorityDto;
-import org.intech.forum.service.AccountAuthorityService;
+import org.intech.forum.service.account.AccountAuthorityService;
 import org.intech.forum.validation.marker.OnCreate;
 import org.intech.forum.validation.marker.OnUpdate;
 import org.springframework.security.access.prepost.PreAuthorize;

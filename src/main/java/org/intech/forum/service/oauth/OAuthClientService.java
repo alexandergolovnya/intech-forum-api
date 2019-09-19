@@ -1,4 +1,4 @@
-package org.intech.forum.service;
+package org.intech.forum.service.oauth;
 
 import org.intech.forum.domain.dto.OAuthClientDto;
 

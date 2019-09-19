@@ -1,7 +1,7 @@
 package org.intech.forum.config;
 
 import lombok.RequiredArgsConstructor;
-import org.intech.forum.service.CustomUserDetailsService;
+import org.intech.forum.service.oauth.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

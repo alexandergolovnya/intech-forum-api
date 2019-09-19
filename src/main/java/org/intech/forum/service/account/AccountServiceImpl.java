@@ -1,4 +1,4 @@
-package org.intech.forum.service;
+package org.intech.forum.service.account;
 
 import lombok.RequiredArgsConstructor;
 import org.intech.forum.domain.dto.AccountDto;
