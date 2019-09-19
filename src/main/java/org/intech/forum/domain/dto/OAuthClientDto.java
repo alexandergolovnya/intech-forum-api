@@ -1,8 +1,8 @@
 package org.intech.forum.domain.dto;
 
 import lombok.Data;
-import org.intech.forum.validation.OnCreate;
-import org.intech.forum.validation.OnUpdate;
+import org.intech.forum.validation.marker.OnCreate;
+import org.intech.forum.validation.marker.OnUpdate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

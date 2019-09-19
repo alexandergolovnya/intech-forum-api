@@ -1,4 +1,4 @@
-package org.intech.forum.validation;
+package org.intech.forum.validation.password;
 
 import org.passay.*;
 
