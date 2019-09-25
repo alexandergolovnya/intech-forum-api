@@ -29,11 +29,8 @@ public class SecurityUtils {
      * @param objectCreatorEmail email of the user that have created this verifiable object
      */
     public static void checkUserAccessRightsToThisMethod(Principal principal, String objectCreatorEmail) throws ForbiddenException {
-        Authentication userAuthentication = ((OAuth2Authentication) principal).getUserAuthentication();
-        String currentUserEmail = userAuthentication.getPrincipal().toString();
-        List<String> userAuthoritiesList = userAuthentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+        final String currentUserEmail = getCurrentUserEmailFromPrincipal(principal);
+        final List<String> userAuthoritiesList = getUserAuthoritiesListFromPrincipal(principal);
 
         if (!objectCreatorEmail.equals(currentUserEmail) && !userAuthoritiesList.contains("ROLE_ADMIN")) {
             log.debug(String.format("objectCreatorEmail = %s", objectCreatorEmail));
@@ -42,5 +39,27 @@ public class SecurityUtils {
 
             throw new ForbiddenException("Current user doesn't have access rights to this operation");
         }
+    }
+
+    /**
+     * Method returns email of the current user from user principal.
+     *
+     * @param principal current user credentials
+     */
+    public static String getCurrentUserEmailFromPrincipal(Principal principal) {
+        final Authentication userAuthentication = ((OAuth2Authentication) principal).getUserAuthentication();
+        return userAuthentication.getPrincipal().toString();
+    }
+
+    /**
+     * Method returns list of user authorities of the current user from user principal.
+     *
+     * @param principal current user credentials
+     */
+    private static List<String> getUserAuthoritiesListFromPrincipal(Principal principal) {
+        final Authentication userAuthentication = ((OAuth2Authentication) principal).getUserAuthentication();
+        return userAuthentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
     }
 }
