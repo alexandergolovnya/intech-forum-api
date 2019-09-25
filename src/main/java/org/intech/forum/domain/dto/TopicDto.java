@@ -28,6 +28,5 @@ public class TopicDto {
 
     @Null(groups = OnCreate.class,
             message = "Topic filed 'lastMessageDateTime' couldn't be assigned directly on creation, it should be null")
-    @Null(groups = OnUpdate.class, message = "Topic filed 'lastMessageDateTime' couldn't be null on editing")
     private LocalDateTime lastMessageDateTime;
 }

@@ -29,11 +29,12 @@ public class TopicMessageDto {
     @NotNull(message = "Topic message field 'account id' may not be null")
     private Integer accountId;
 
+    @NotNull(groups = OnUpdate.class, message = "Topic message field 'account full name' may not be null on update")
+    private String accountFullName;
+
     @NotNull(message = "Topic message field 'topic id' may not be null")
     private Integer topicId;
 
     private LocalDateTime createDate;
-
-    @Null(message = "Topic message filed 'updateDate' couldn't be assigned directly, it should be null")
     private LocalDateTime updateDate;
 }
