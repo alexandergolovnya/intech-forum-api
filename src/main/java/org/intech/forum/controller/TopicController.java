@@ -59,8 +59,14 @@ public class TopicController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping
-    public List<TopicDto> getAllOAuthClients() {
+    public List<TopicDto> getAllTopics() {
         return topicService.getAllTopics();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/count")
+    public long getTopicsCount() {
+        return topicService.getTopicsCount();
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")

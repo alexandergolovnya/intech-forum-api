@@ -67,8 +67,27 @@ public class TopicMessageController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/page")
-    public Page<TopicMessageDto> getAllTopicMessagesOrderByUpdateDateDesc(@RequestParam int page, @RequestParam int size) {
-        return topicMessageService.getAllTopicMessagesOrderByUpdateDateDesc(page, size);
+    public Page<TopicMessageDto> getAllTopicMessagesPageable(@RequestParam int page, @RequestParam int size) {
+        return topicMessageService.getAllTopicMessagesPageable(page, size);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/topic/{topicId}")
+    public Page<TopicMessageDto> getAllTopicMessagesByTopicIdPageable(@PathVariable int topicId,
+                                                                      @RequestParam int page, @RequestParam int size) {
+        return topicMessageService.getAllTopicMessagesByTopicIdPageable(topicId, page, size);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/count")
+    public long getTopicMessagesCount() {
+        return topicMessageService.getTopicMessagesCount();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/topic/{topicId}/count")
+    public long getTopicMessagesCount(@PathVariable int topicId) {
+        return topicMessageService.getTopicMessagesCountByTopicId(topicId);
     }
 }
 

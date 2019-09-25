@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
+import static org.intech.forum.utils.SecurityUtils.getCurrentUserEmailFromPrincipal;
+
 /**
  * @author: Alexander Golovnya <mail@alexandergolovnya.ru>
  * @created: 2019/09/17
@@ -48,6 +50,18 @@ public class AccountController {
     @GetMapping("/{id}")
     public AccountDto getAccount(@PathVariable int id) {
         return accountService.getAccount(id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/current")
+    public Principal getPrincipal(Principal principal) {
+        return principal;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/current-user")
+    public AccountDto getAccountFromPrincipal(Principal principal) {
+        return accountService.getAccountByEmail(getCurrentUserEmailFromPrincipal(principal));
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
