@@ -1,4 +1,4 @@
-package org.intech.forum.config;
+package org.intech.forum.loader;
 
 import lombok.RequiredArgsConstructor;
 import org.intech.forum.domain.entity.Account;
@@ -7,6 +7,7 @@ import org.intech.forum.domain.repository.AccountAuthorityRepository;
 import org.intech.forum.domain.repository.AccountRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +22,9 @@ import java.util.stream.Stream;
  * @created: 2019/09/19
  */
 @Component
+@Order(1)
 @RequiredArgsConstructor
-public class DataLoader implements ApplicationRunner {
+public class AccountsDataLoader implements ApplicationRunner {
 
     private final AccountRepository accountRepository;
     private final AccountAuthorityRepository accountAuthorityRepository;
@@ -51,7 +53,7 @@ public class DataLoader implements ApplicationRunner {
             final Account admin = new Account();
             admin.setEmail("admin@admin");
             admin.setPhone("+79187776655");
-            admin.setPassword(passwordEncoder.encode("Qwerty123$"));
+            admin.setPassword(passwordEncoder.encode("pass"));
             admin.setFirstName("Александр");
             admin.setMiddleName("Константинович");
             admin.setLastName("Головня");
@@ -71,7 +73,7 @@ public class DataLoader implements ApplicationRunner {
             final Account user = new Account();
             user.setEmail("user@user");
             user.setPhone("+79187776644");
-            user.setPassword(passwordEncoder.encode("Qwerty123$"));
+            user.setPassword(passwordEncoder.encode("pass"));
             user.setFirstName("Иван");
             user.setMiddleName("Иванович");
             user.setLastName("Иванов");
