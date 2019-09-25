@@ -41,6 +41,10 @@ public class AccountServiceImpl implements AccountService {
         final Account account = map(accountDto, Account.class);
         account.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         account.setAccountAuthorities(getAccountAuthorityUser());
+        account.setCredentialsNonExpired(true);
+        account.setAccountNonLocked(true);
+        account.setAccountNonExpired(true);
+        account.setEnabled(true);
         accountRepository.save(account);
 
         return map(account, AccountDto.class);
