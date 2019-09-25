@@ -26,9 +26,13 @@ public class TopicMessage {
     @Column(nullable = false, unique = true, length = 60)
     private String messageTitle;
 
+    @Column(length = 4096)
     private String messageBody;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(length = 90)
+    private String accountFullName;
+
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 

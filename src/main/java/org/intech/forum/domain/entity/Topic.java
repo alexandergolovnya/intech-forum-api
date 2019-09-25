@@ -24,6 +24,7 @@ public class Topic {
     @Column(nullable = false, unique = true, length = 60)
     private String title;
 
+    @Column(length = 4096)
     private String description;
 
     @Column(columnDefinition = "TIMESTAMP")
