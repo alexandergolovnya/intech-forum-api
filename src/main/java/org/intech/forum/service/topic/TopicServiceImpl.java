@@ -37,22 +37,21 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDto editTopic(int id, TopicDto dto) {
-        final Optional<Topic> topicToEdit = topicRepository.findById(id);
+        Topic topic = topicRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Topic with such id doesn't exists."));
 
-        if (topicToEdit.isPresent()) {
-            Topic topic = topicToEdit.get();
+        final LocalDateTime lastMessageDateTime = topic.getLastMessageDateTime();
 
-            // check title for uniqueness if it was edited
-            if (!isEmpty(dto.getTitle()) && !dto.getTitle().equals(topic.getTitle())) {
-                checkTopicTitleForUniqueness(dto);
-            }
+        // check title for uniqueness if it was edited
+        if (!isEmpty(dto.getTitle()) && !dto.getTitle().equals(topic.getTitle())) {
+            checkTopicTitleForUniqueness(dto);
+        }
 
-            topic = map(dto, Topic.class);
-            topicRepository.save(topic);
+        topic = map(dto, Topic.class);
+        topic.setLastMessageDateTime(lastMessageDateTime);
+        topicRepository.save(topic);
 
-            return map(topic, TopicDto.class);
-
-        } else throw new IllegalArgumentException("Topic with such id doesn't exists.");
+        return map(topic, TopicDto.class);
     }
 
     @Override
