@@ -94,6 +94,11 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public long getTopicsCount() {
+        return topicRepository.count();
+    }
+
+    @Override
     public void updateTopicLastMessageDate(Topic topic, LocalDateTime dateTime) {
         topic.setLastMessageDateTime(dateTime);
         topicRepository.save(topic);

@@ -27,5 +27,7 @@ public interface TopicService {
 
     Page<TopicDto> getAllTopicsSortedByLastMessageDate(int page, int size);
 
+    long getTopicsCount();
+
     void updateTopicLastMessageDate(Topic topic, LocalDateTime dateTime);
 }
