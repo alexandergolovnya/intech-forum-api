@@ -24,5 +24,11 @@ public interface TopicMessageService {
 
     List<TopicMessageDto> getAllTopicMessages();
 
-    Page<TopicMessageDto> getAllTopicMessagesOrderByUpdateDateDesc(int page, int size);
+    Page<TopicMessageDto> getAllTopicMessagesPageable(int page, int size);
+
+    Page<TopicMessageDto> getAllTopicMessagesByTopicIdPageable(int topicId, int page, int size);
+
+    long getTopicMessagesCount();
+
+    long getTopicMessagesCountByTopicId(int topicID);
 }

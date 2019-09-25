@@ -45,8 +45,11 @@ public class TopicMessageServiceImpl implements TopicMessageService {
         final Account account = accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("Account with such id doesn't exist"));
 
+        final String accountFullName = String.format("%s %s", account.getFirstName(), account.getLastName());
+
         topicMessage.setTopic(topic);
         topicMessage.setAccount(account);
+        topicMessage.setAccountFullName(accountFullName);
         topicMessageRepository.save(topicMessage);
 
         topicService.updateTopicLastMessageDate(topic, topicMessage.getCreateDate());
@@ -83,6 +86,9 @@ public class TopicMessageServiceImpl implements TopicMessageService {
         final Account account = accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("Account with such id doesn't exist"));
 
+        final String accountFullName = String.format("%s %s", account.getFirstName(), account.getLastName());
+
+        topicMessage.setAccountFullName(accountFullName);
         topicMessage.setTopic(topic);
         topicMessage.setAccount(account);
         topicMessage.setCreateDate(createDate);
@@ -133,10 +139,27 @@ public class TopicMessageServiceImpl implements TopicMessageService {
     }
 
     @Override
-    public Page<TopicMessageDto> getAllTopicMessagesOrderByUpdateDateDesc(int page, int size) {
+    public Page<TopicMessageDto> getAllTopicMessagesPageable(int page, int size) {
         Pageable sortedByUpdateDate = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
         Page<TopicMessage> topicMessagePage = topicMessageRepository.findAll(sortedByUpdateDate);
         return new PageImpl<>(mapAll(topicMessagePage.getContent(), TopicMessageDto.class));
+    }
+
+    @Override
+    public Page<TopicMessageDto> getAllTopicMessagesByTopicIdPageable(int topicId, int page, int size) {
+        Pageable sortedByUpdateDate = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
+        Page<TopicMessage> topicMessagePage = topicMessageRepository.findAllByTopicId(topicId, sortedByUpdateDate);
+        return new PageImpl<>(mapAll(topicMessagePage.getContent(), TopicMessageDto.class));
+    }
+
+    @Override
+    public long getTopicMessagesCount() {
+        return topicMessageRepository.count();
+    }
+
+    @Override
+    public long getTopicMessagesCountByTopicId(int topicID) {
+        return topicMessageRepository.countAllByTopicId(topicID);
     }
 
     private void checkTopicMessageTitleForUniqueness(TopicMessageDto dto) {
