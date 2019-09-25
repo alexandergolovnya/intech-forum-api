@@ -9,6 +9,10 @@ For building and running the application you need:
 - [Maven 3](https://maven.apache.org)
 - [PostgreSQL](https://www.postgresql.org/)
 
+## Heroku instance
+
+There is an instance of application deployed to Heroku available at https://intech-forum-api.herokuapp.com/forum/api
+
 ## Running the application
 
 ### Building
