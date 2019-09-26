@@ -25,6 +25,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
+                .antMatchers("/swagger-resources/**", "/v2/api-docs", "/webjars/**", "/swagger-ui.html").anonymous()
                 .antMatchers("/accounts/**").permitAll()
                 .anyRequest().authenticated();
     }
