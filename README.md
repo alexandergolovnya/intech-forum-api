@@ -13,6 +13,10 @@ For building and running the application you need:
 
 There is an instance of application deployed to Heroku available at https://intech-forum-api.herokuapp.com/forum/api
 
+## Swagger UI
+
+There is an Swagger UI with info about available endpoints at https://intech-forum-api.herokuapp.com/forum/api/swagger-ui.html
+
 ## Running the application
 
 ### Building
